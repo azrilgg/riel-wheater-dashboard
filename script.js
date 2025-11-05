@@ -8,6 +8,7 @@ const weatherCard = document.getElementById("weatherCard");
 const errorEl = document.getElementById("error");
 const loadingEl = document.getElementById("loading");
 
+// 🔥 Ambil cuaca berdasarkan nama kota
 async function getWeather(city) {
   try {
     showLoading(true);
@@ -22,6 +23,22 @@ async function getWeather(city) {
   }
 }
 
+// 🌍 Ambil cuaca berdasarkan koordinat lokasi
+async function getWeatherByLocation(lat, lon) {
+  try {
+    showLoading(true);
+    const res = await fetch(`${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=id`);
+    if (!res.ok) throw new Error("Gagal mengambil data lokasi!");
+    const data = await res.json();
+    renderWeather(data);
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    showLoading(false);
+  }
+}
+
+// 💨 Render data ke tampilan
 function renderWeather(data) {
   errorEl.classList.add("hidden");
   weatherCard.classList.remove("hidden");
@@ -47,6 +64,7 @@ function showLoading(state) {
   loadingEl.classList.toggle("hidden", !state);
 }
 
+// 🔍 Tombol cari
 searchBtn.onclick = () => {
   const city = cityInput.value.trim();
   city ? getWeather(city) : showError("Masukkan nama kota terlebih dahulu!");
@@ -56,33 +74,47 @@ cityInput.addEventListener("keydown", e => {
   if (e.key === "Enter") searchBtn.click();
 });
 
+// 📍 Tombol "Lokasi Saya"
 locBtn.onclick = () => {
+  ambilLokasi();
+};
+
+// 🚀 Fungsi ambil lokasi pengguna
+function ambilLokasi() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
         const { latitude, longitude } = pos.coords;
         getWeatherByLocation(latitude, longitude);
       },
-      () => showError("Akses lokasi ditolak!")
+      () => showError("Akses lokasi ditolak! Gunakan tombol cari.")
     );
-  } else showError("Browser tidak mendukung geolokasi!");
-};
-
-async function getWeatherByLocation(lat, lon) {
-  try {
-    showLoading(true);
-    const res = await fetch(`${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=id`);
-    const data = await res.json();
-    renderWeather(data);
-  } catch {
-    showError("Gagal mengambil data lokasi!");
-  } finally {
-    showLoading(false);
+  } else {
+    showError("Browser tidak mendukung geolokasi!");
   }
 }
 
+// 🧠 Saat halaman pertama kali dibuka
 window.addEventListener("load", () => {
-  const last = localStorage.getItem("lastCity");
-  if (last) getWeather(last);
-  else getWeather("Jakarta");
+  showLoading(true);
+  // 🔥 Coba ambil lokasi otomatis
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { latitude, longitude } = pos.coords;
+        getWeatherByLocation(latitude, longitude);
+      },
+      () => {
+        // ❗ Kalau user tolak izin lokasi → pakai kota terakhir atau default Jakarta
+        const last = localStorage.getItem("lastCity");
+        if (last) getWeather(last);
+        else getWeather("Jakarta");
+      }
+    );
+  } else {
+    // Kalau browser gak dukung GPS
+    const last = localStorage.getItem("lastCity");
+    if (last) getWeather(last);
+    else getWeather("Jakarta");
+  }
 });
