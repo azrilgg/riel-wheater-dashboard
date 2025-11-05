@@ -1,5 +1,6 @@
-const API_KEY = "ec057fba69dcc0416f1622967c6239f9";
-const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+// 🌤️ Riel Weather Dashboard - Versi Tomorrow.io API
+const API_KEY = "Md7KuwozWUBPlAj3vRoTogSkU0Ebj82A"; // 🔑 ganti dengan API key Tomorrow.io milikmu
+const BASE_URL = "https://api.tomorrow.io/v4/weather/realtime";
 
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -8,12 +9,12 @@ const weatherCard = document.getElementById("weatherCard");
 const errorEl = document.getElementById("error");
 const loadingEl = document.getElementById("loading");
 
-// 🔥 Ambil cuaca berdasarkan nama kota
-async function getWeather(city) {
+// Fungsi utama ambil data cuaca berdasarkan koordinat
+async function getWeather(lat, lon) {
   try {
     showLoading(true);
-    const res = await fetch(`${BASE_URL}?q=${city}&appid=${API_KEY}&units=metric&lang=id`);
-    if (!res.ok) throw new Error("Kota tidak ditemukan!");
+    const res = await fetch(`${BASE_URL}?location=${lat},${lon}&apikey=${API_KEY}`);
+    if (!res.ok) throw new Error("Gagal mengambil data cuaca!");
     const data = await res.json();
     renderWeather(data);
   } catch (err) {
@@ -23,35 +24,34 @@ async function getWeather(city) {
   }
 }
 
-// 🌍 Ambil cuaca berdasarkan koordinat lokasi
-async function getWeatherByLocation(lat, lon) {
+// Fungsi ambil koordinat dari nama kota (pakai API geocoding OpenStreetMap)
+async function getCityCoords(city) {
   try {
-    showLoading(true);
-    const res = await fetch(`${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=id`);
-    if (!res.ok) throw new Error("Gagal mengambil data lokasi!");
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${city}&format=json&limit=1`);
     const data = await res.json();
-    renderWeather(data);
+    if (data.length === 0) throw new Error("Kota tidak ditemukan!");
+    const { lat, lon, display_name } = data[0];
+    getWeather(lat, lon);
+    localStorage.setItem("lastCity", display_name);
   } catch (err) {
     showError(err.message);
-  } finally {
-    showLoading(false);
   }
 }
 
-// 💨 Render data ke tampilan
+// Render hasil ke tampilan
 function renderWeather(data) {
+  const w = data.data.values;
   errorEl.classList.add("hidden");
   weatherCard.classList.remove("hidden");
 
-  document.getElementById("cityName").textContent = `${data.name}, ${data.sys.country}`;
-  document.getElementById("weatherDesc").textContent = data.weather[0].description;
-  document.getElementById("tempValue").textContent = `${Math.round(data.main.temp)}°C`;
-  document.getElementById("humidity").textContent = `Kelembapan ${data.main.humidity}%`;
-  document.getElementById("wind").textContent = `Angin ${data.wind.speed} m/s`;
-  document.getElementById("feels").textContent = `Terasa ${Math.round(data.main.feels_like)}°C`;
-  document.getElementById("weatherIcon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  document.getElementById("cityName").textContent = localStorage.getItem("lastCity") || "Lokasi Anda";
+  document.getElementById("weatherDesc").textContent = `Kondisi: ${translateCondition(w.weatherCode)}`;
+  document.getElementById("tempValue").textContent = `${Math.round(w.temperature)}°C`;
+  document.getElementById("humidity").textContent = `Kelembapan ${w.humidity}%`;
+  document.getElementById("wind").textContent = `Angin ${w.windSpeed} m/s`;
+  document.getElementById("feels").textContent = `Terasa ${Math.round(w.temperatureApparent)}°C`;
 
-  localStorage.setItem("lastCity", data.name);
+  document.getElementById("weatherIcon").src = getWeatherIcon(w.weatherCode);
 }
 
 function showError(msg) {
@@ -64,57 +64,85 @@ function showLoading(state) {
   loadingEl.classList.toggle("hidden", !state);
 }
 
-// 🔍 Tombol cari
+// Tombol cari kota
 searchBtn.onclick = () => {
   const city = cityInput.value.trim();
-  city ? getWeather(city) : showError("Masukkan nama kota terlebih dahulu!");
+  city ? getCityCoords(city) : showError("Masukkan nama kota terlebih dahulu!");
 };
 
 cityInput.addEventListener("keydown", e => {
   if (e.key === "Enter") searchBtn.click();
 });
 
-// 📍 Tombol "Lokasi Saya"
+// Tombol lokasi sekarang
 locBtn.onclick = () => {
   ambilLokasi();
 };
 
-// 🚀 Fungsi ambil lokasi pengguna
 function ambilLokasi() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
         const { latitude, longitude } = pos.coords;
-        getWeatherByLocation(latitude, longitude);
+        getWeather(latitude, longitude);
       },
-      () => showError("Akses lokasi ditolak! Gunakan tombol cari.")
+      () => showError("Akses lokasi ditolak!")
     );
   } else {
     showError("Browser tidak mendukung geolokasi!");
   }
 }
 
-// 🧠 Saat halaman pertama kali dibuka
+// Ganti kode cuaca ke teks
+function translateCondition(code) {
+  const map = {
+    1000: "Cerah",
+    1100: "Cerah sebagian",
+    1101: "Berawan sebagian",
+    1102: "Berawan",
+    2000: "Kabut",
+    2100: "Kabut ringan",
+    4000: "Gerimis",
+    4200: "Hujan ringan",
+    4201: "Hujan deras",
+    5000: "Salju",
+    5100: "Salju ringan",
+    6000: "Hujan es ringan",
+    6200: "Campuran salju ringan",
+    6201: "Campuran salju deras"
+  };
+  return map[code] || "Tidak diketahui";
+}
+
+// Ganti kode cuaca ke ikon
+function getWeatherIcon(code) {
+  const base = "https://www.tomorrow.io/static/img/icons/";
+  const icons = {
+    1000: "clear_day.svg",
+    1100: "mostly_clear_day.svg",
+    1101: "partly_cloudy_day.svg",
+    1102: "cloudy.svg",
+    4200: "rain_light.svg",
+    4201: "rain_heavy.svg",
+    2000: "fog.svg"
+  };
+  return base + (icons[code] || "unknown.svg");
+}
+
+// Saat pertama kali dibuka
 window.addEventListener("load", () => {
   showLoading(true);
-  // 🔥 Coba ambil lokasi otomatis
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
         const { latitude, longitude } = pos.coords;
-        getWeatherByLocation(latitude, longitude);
+        getWeather(latitude, longitude);
       },
       () => {
-        // ❗ Kalau user tolak izin lokasi → pakai kota terakhir atau default Jakarta
         const last = localStorage.getItem("lastCity");
-        if (last) getWeather(last);
-        else getWeather("Jakarta");
+        if (last) getCityCoords(last);
+        else getCityCoords("Jakarta");
       }
     );
-  } else {
-    // Kalau browser gak dukung GPS
-    const last = localStorage.getItem("lastCity");
-    if (last) getWeather(last);
-    else getWeather("Jakarta");
   }
 });
