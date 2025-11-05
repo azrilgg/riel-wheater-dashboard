@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard - Azriel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌦️ Weather Dashboard</h1>
+      <button id="themeToggle">🌙</button>
+    </header>
+
+    <div class="search-box">
+      <input type="text" id="cityInput" placeholder="Cari kota (contoh: Jakarta)">
+      <button id="searchBtn">Cari</button>
+      <button id="locBtn">📍 Gunakan Lokasi Saya</button>
+    </div>
+
+    <p id="error" class="error hidden"></p>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="weatherCard" class="weather-card hidden">
+      <h2 id="cityName">Jakarta, ID</h2>
+      <img id="weatherIcon" src="" alt="Ikon Cuaca">
+      <p id="weatherDesc"></p>
+      <h3 id="tempValue"></h3>
+      <p>
+        💧 <span id="humidity"></span> | 🌬️ <span id="wind"></span>
+      </p>
+      <p id="feels"></p>
+    </div>
+
+    <footer>
+      <small>Made by <b>Ahmad Azriel</b> | Dark Elegant UI</small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+      </html>
