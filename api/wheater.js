@@ -1,22 +1,21 @@
-// /api/weather.js
+// api/weather.js
 
 export default async function handler(req, res) {
   const { lat, lon } = req.query;
-  const apiKey = process.env.TOMORROW_API_KEY;
+
+  if (!lat || !lon) {
+    return res.status(400).json({ error: "Latitude dan longitude diperlukan!" });
+  }
 
   try {
-    const response = await fetch(
-      `https://api.tomorrow.io/v4/weather/realtime?location=${lat},${lon}&apikey=${apiKey}`
-    );
+    const apiKey = process.env.TOMORROW_API_KEY;
+    const url = `https://api.tomorrow.io/v4/weather/realtime?location=${lat},${lon}&apikey=${apiKey}`;
 
-    if (!response.ok) {
-      throw new Error("Gagal mengambil data dari Tomorrow.io");
-    }
-
+    const response = await fetch(url);
     const data = await response.json();
+
     res.status(200).json(data);
-  } catch (error) {
-    console.error("❌ Error:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan pada server cuaca" });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil data cuaca", details: err.message });
   }
 }
