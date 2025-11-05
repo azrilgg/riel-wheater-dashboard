@@ -142,21 +142,26 @@ footer {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Gambar cuaca isi penuh kontainer */
-#weatherIcon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* biar gak gepeng */
-  opacity: 0.3;        /* transparan */
-  z-index: 0;          /* di belakang teks */
-  border-radius: inherit; /* ikut bentuk kontainer */
-  pointer-events: none;   /* biar gak ganggu klik */
+/* Biar weatherCard jadi pembungkus relatif */
+#weatherCard {
+  position: relative;      /* <– ini penting! */
+  overflow: hidden;        /* biar gambar gak keluar kotak */
+  border-radius: 20px;     /* sesuaikan sama desain kamu */
 }
 
-/* Semua teks di atas gambar */
+/* Gambar cuaca isi penuh kontainer hasil pencarian */
+#weatherIcon {
+  position: absolute;
+  inset: 0;                /* shorthand untuk top, left, right, bottom = 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* biar proporsional */
+  opacity: 0.3;            /* tingkat transparansi background */
+  z-index: 0;              /* di belakang teks */
+  pointer-events: none;    /* biar gak ganggu tombol */
+}
+
+/* Semua isi di atas gambar */
 #weatherCard > *:not(#weatherIcon) {
   position: relative;
   z-index: 1;
