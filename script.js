@@ -1,6 +1,4 @@
 // 🌤️ Riel Weather Dashboard - Versi Tomorrow.io API
-const API_KEY = "Md7KuwozWUBPlAj3vRoTogSkU0Ebj82A"; // 🔑 ganti dengan API key Tomorrow.io milikmu
-const BASE_URL = "https://api.tomorrow.io/v4/weather/realtime";
 
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
