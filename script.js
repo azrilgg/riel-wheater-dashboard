@@ -7,35 +7,16 @@ const weatherCard = document.getElementById("weatherCard");
 const errorEl = document.getElementById("error");
 const loadingEl = document.getElementById("loading");
 
-// ✅ Ambil data cuaca langsung dari WeatherAPI
+// Fungsi utama ambil data cuaca berdasarkan koordinat 
 async function getWeather(lat, lon) {
   try {
     showLoading(true);
-    const res = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=WEATHER_API_KEY_&q=${lat},${lon}&lang=id`
-    );
+    const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`); 
     if (!res.ok) throw new Error("Gagal mengambil data cuaca!");
     const data = await res.json();
-
-    renderWeather({
-      data: {
-        values: {
-          temperature: data.current.temp_c,
-          humidity: data.current.humidity,
-          windSpeed: data.current.wind_kph / 3.6, // ubah ke m/s
-          temperatureApparent: data.current.feelslike_c,
-          weatherCode: data.current.condition.code
-        }
-      }
-    });
-
-    // Simpan nama kota dari API agar muncul di UI
-    localStorage.setItem("lastCity", data.location.name + ", " + data.location.region);
-    document.getElementById("cityName").textContent =
-      data.location.name + ", " + data.location.region;
-
+    renderWeather(data);
   } catch (err) {
-    showError("Gagal ambil data cuaca dari WeatherAPI!");
+    showError(err.message);
   } finally {
     showLoading(false);
   }
