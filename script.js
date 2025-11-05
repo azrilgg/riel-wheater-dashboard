@@ -9,11 +9,11 @@ const weatherCard = document.getElementById("weatherCard");
 const errorEl = document.getElementById("error");
 const loadingEl = document.getElementById("loading");
 
-// Fungsi utama ambil data cuaca berdasarkan koordinat
+// Fungsi utama ambil data cuaca berdasarkan koordinat 
 async function getWeather(lat, lon) {
   try {
     showLoading(true);
-    const res = await fetch(`${BASE_URL}?location=${lat},${lon}&apikey=${API_KEY}`);
+    const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`); 
     if (!res.ok) throw new Error("Gagal mengambil data cuaca!");
     const data = await res.json();
     renderWeather(data);
