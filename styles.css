@@ -169,44 +169,44 @@ footer {
 
 
 
-/* ✨ Intro Screen */
+/* 🌅 Intro Screen */
 #intro {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
-  animation: bgShift 8s ease-in-out infinite alternate;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* pagi lembut */
+  animation: skyShift 10s ease-in-out infinite alternate;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   flex-direction: column;
   font-family: "Poppins", sans-serif;
   color: #fff;
   z-index: 9999;
+  overflow: hidden;
 }
 
-/* 🌈 Gradient animasi dinamis */
-@keyframes bgShift {
+/* 🌈 Animasi langit - pagi > siang > senja */
+@keyframes skyShift {
   0% {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* pagi */
   }
   50% {
-    background: linear-gradient(135deg, #74c0fc, #4dabf7, #15aabf);
+    background: linear-gradient(135deg, #4facfe, #00f2fe); /* siang */
   }
   100% {
-    background: linear-gradient(135deg, #228be6, #4dabf7);
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* senja ungu-pink lembut */
   }
 }
 
-/* 🌬️ Partikel lembut */
+/* 🌬️ Partikel halus */
 .particles {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px);
   background-size: 3px 3px;
-  animation: floatParticles 20s linear infinite;
+  animation: floatParticles 25s linear infinite;
+  opacity: 0.3;
   z-index: 0;
-  opacity: 0.5;
 }
 
 @keyframes floatParticles {
@@ -214,11 +214,11 @@ footer {
     background-position: 0 0;
   }
   to {
-    background-position: 1000px 1000px;
+    background-position: 1200px 1200px;
   }
 }
 
-/* ☁️ Clouds */
+/* ☁️ Clouds - bergerak lembut */
 .clouds {
   position: absolute;
   inset: 0;
@@ -228,33 +228,33 @@ footer {
 
 .cloud {
   position: absolute;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 50%;
-  filter: blur(20px);
-  opacity: 0.8;
+  filter: blur(25px);
+  opacity: 0.9;
   animation: moveClouds linear infinite;
 }
 
 .cloud1 {
-  width: 180px;
+  width: 200px;
   height: 90px;
   top: 25%;
-  left: -200px;
-  animation-duration: 60s;
+  left: -220px;
+  animation-duration: 65s;
 }
 .cloud2 {
-  width: 250px;
+  width: 280px;
   height: 100px;
   top: 55%;
   left: -300px;
-  animation-duration: 80s;
+  animation-duration: 85s;
 }
 .cloud3 {
-  width: 200px;
+  width: 240px;
   height: 90px;
   top: 75%;
-  left: -250px;
-  animation-duration: 100s;
+  left: -270px;
+  animation-duration: 105s;
 }
 
 @keyframes moveClouds {
@@ -262,55 +262,58 @@ footer {
     transform: translateX(0);
   }
   to {
-    transform: translateX(130vw);
+    transform: translateX(135vw);
   }
 }
 
-/* ☀️ Sun & Rays */
+/* ☀️ Sun rays */
 .sun-rays {
   position: absolute;
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 224, 102, 0.8), transparent 70%);
-  filter: blur(25px);
-  animation: pulseRay 4s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(255, 238, 88, 0.9), transparent 70%);
+  filter: blur(30px);
+  animation: pulseRay 5s ease-in-out infinite;
   z-index: 1;
 }
 
 @keyframes pulseRay {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.7;
+    opacity: 0.75;
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.25);
     opacity: 1;
   }
 }
 
-/* 🌤️ Text */
+/* 🌤️ Intro Content */
 .intro-content {
   text-align: center;
   z-index: 3;
-  animation: fadeIn 2s ease-out;
+  animation: fadeIn 2.2s ease-out;
 }
 
 .intro-content i {
   color: #ffe066;
-  animation: rotateSun 8s linear infinite;
+  animation: rotateSun 10s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 120, 0.8));
 }
 
 .intro-content h1 {
   font-size: 3rem;
-  margin: 15px 0 8px;
+  margin: 20px 0 8px;
   letter-spacing: 2px;
   font-weight: 600;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .intro-content p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  opacity: 0.95;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes rotateSun {
@@ -322,23 +325,35 @@ footer {
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* 🌈 Progress Bar */
 .progress-container {
   width: 280px;
   height: 8px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 50px;
-  margin: 40px auto 0;
+  margin: 45px auto 0;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .progress-bar {
   width: 0;
   height: 100%;
-  background: linear-gradient(90deg, #ffe066, #ffd43b, #fab005);
+  background: linear-gradient(90deg, #ffe066, #fdd835, #ffc300, #ffb703);
   border-radius: 50px;
-  animation: loadProgress 5s ease-in-out forwards;
+  animation: loadProgress 5s cubic-bezier(0.45, 0, 0.55, 1) forwards;
   position: relative;
   overflow: hidden;
 }
@@ -347,10 +362,10 @@ footer {
   0% {
     width: 0%;
   }
-  40% {
-    width: 60%;
+  30% {
+    width: 50%;
   }
-  70% {
+  60% {
     width: 80%;
   }
   100% {
@@ -363,24 +378,25 @@ footer {
   content: "";
   position: absolute;
   top: 0;
-  left: -60px;
-  width: 60px;
+  left: -80px;
+  width: 80px;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
   animation: shine 2s infinite linear;
+  opacity: 0.8;
 }
 
 @keyframes shine {
   0% {
-    left: -60px;
+    left: -80px;
   }
   100% {
-    left: 300px;
+    left: 320px;
   }
 }
 
-/* Fade out */
+/* 🌇 Fade Out */
 .fade-out {
   opacity: 0;
   transition: opacity 1s ease;
-  }
+}
