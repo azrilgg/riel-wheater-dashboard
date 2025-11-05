@@ -166,3 +166,221 @@ footer {
   position: relative;
   z-index: 1;
 }
+
+
+
+/* ✨ Intro Screen */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  animation: bgShift 8s ease-in-out infinite alternate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-direction: column;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  z-index: 9999;
+}
+
+/* 🌈 Gradient animasi dinamis */
+@keyframes bgShift {
+  0% {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+  50% {
+    background: linear-gradient(135deg, #74c0fc, #4dabf7, #15aabf);
+  }
+  100% {
+    background: linear-gradient(135deg, #228be6, #4dabf7);
+  }
+}
+
+/* 🌬️ Partikel lembut */
+.particles {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px);
+  background-size: 3px 3px;
+  animation: floatParticles 20s linear infinite;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+@keyframes floatParticles {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1000px 1000px;
+  }
+}
+
+/* ☁️ Clouds */
+.clouds {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.8;
+  animation: moveClouds linear infinite;
+}
+
+.cloud1 {
+  width: 180px;
+  height: 90px;
+  top: 25%;
+  left: -200px;
+  animation-duration: 60s;
+}
+.cloud2 {
+  width: 250px;
+  height: 100px;
+  top: 55%;
+  left: -300px;
+  animation-duration: 80s;
+}
+.cloud3 {
+  width: 200px;
+  height: 90px;
+  top: 75%;
+  left: -250px;
+  animation-duration: 100s;
+}
+
+@keyframes moveClouds {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(130vw);
+  }
+}
+
+/* ☀️ Sun & Rays */
+.sun-rays {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 224, 102, 0.8), transparent 70%);
+  filter: blur(25px);
+  animation: pulseRay 4s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes pulseRay {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* 🌤️ Text */
+.intro-content {
+  text-align: center;
+  z-index: 3;
+  animation: fadeIn 2s ease-out;
+}
+
+.intro-content i {
+  color: #ffe066;
+  animation: rotateSun 8s linear infinite;
+}
+
+.intro-content h1 {
+  font-size: 3rem;
+  margin: 15px 0 8px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.intro-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+@keyframes rotateSun {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 🌈 Progress Bar */
+.progress-container {
+  width: 280px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  margin: 40px auto 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #ffe066, #ffd43b, #fab005);
+  border-radius: 50px;
+  animation: loadProgress 5s ease-in-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes loadProgress {
+  0% {
+    width: 0%;
+  }
+  40% {
+    width: 60%;
+  }
+  70% {
+    width: 80%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* ✨ Shine effect */
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60px;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  animation: shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    left: -60px;
+  }
+  100% {
+    left: 300px;
+  }
+}
+
+/* Fade out */
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+  }
