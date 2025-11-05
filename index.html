@@ -3,45 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Dashboard - Azriel</title>
+  <title>Riel Weather Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+
+  <!-- 🎥 Video Background -->
+  <video autoplay muted loop playsinline id="bgVideo">
+    <source src="assets/sky.mp4" type="video/mp4">
+  </video>
+
+  <!-- 🌤️ Konten Utama -->
+  <div class="app">
     <header>
-      <h1>🌦️ Weather Dashboard</h1>
-      <button id="themeToggle">🌙</button>
+      <div class="logo">
+        <i class="fa-solid fa-cloud-sun"></i>
+        <h1>Riel Weather</h1>
+      </div>
     </header>
 
-    <div class="search-box">
-      <input type="text" id="cityInput" placeholder="Cari kota (contoh: Jakarta)">
-      <button id="searchBtn">Cari</button>
-      <button id="locBtn">📍 Gunakan Lokasi Saya</button>
+    <div class="search">
+      <input type="text" id="cityInput" placeholder="🔍 Cari kota (contoh: Bandung)">
+      <button id="searchBtn" class="btn"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+      <button id="locBtn" class="btn"><i class="fa-solid fa-location-crosshairs"></i> Lokasi Saya</button>
     </div>
 
     <p id="error" class="error hidden"></p>
 
     <div id="loading" class="loading hidden">
       <div class="spinner"></div>
+      <p>Mengambil data cuaca...</p>
     </div>
 
     <div id="weatherCard" class="weather-card hidden">
-      <h2 id="cityName">Jakarta, ID</h2>
-      <img id="weatherIcon" src="" alt="Ikon Cuaca">
-      <p id="weatherDesc"></p>
+      <h2 id="cityName"></h2>
+      <img id="weatherIcon" alt="Cuaca">
       <h3 id="tempValue"></h3>
-      <p>
-        💧 <span id="humidity"></span> | 🌬️ <span id="wind"></span>
-      </p>
-      <p id="feels"></p>
+      <p id="weatherDesc"></p>
+      <div class="details">
+        <p><i class="fa-solid fa-droplet"></i> <span id="humidity"></span></p>
+        <p><i class="fa-solid fa-wind"></i> <span id="wind"></span></p>
+        <p><i class="fa-solid fa-temperature-three-quarters"></i> <span id="feels"></span></p>
+      </div>
     </div>
 
     <footer>
-      <small>Made by <b>Ahmad Azriel</b> | Dark Elegant UI</small>
+      <p>Made by <b>Ahmad Azriel</b> | Weather Dashboard 🌦️</p>
     </footer>
   </div>
 
   <script src="script.js"></script>
 </body>
-      </html>
+</html>
