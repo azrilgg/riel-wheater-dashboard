@@ -163,3 +163,13 @@ window.addEventListener("load", () => {
     );
   }
 });
+
+
+// 🌤️ Fade-out setelah animasi selesai
+setTimeout(() => {
+  document.getElementById("intro").classList.add("fade-out");
+}, 5200);
+
+setTimeout(() => {
+  document.getElementById("intro").style.display = "none";
+}, 6000);
