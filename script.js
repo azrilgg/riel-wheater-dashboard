@@ -39,17 +39,27 @@ async function getCityCoords(city) {
 // Render hasil ke tampilan
 function renderWeather(data) {
   const w = data.data.values;
+
+  // ✅ Tambahkan fallback supaya tetap aman
+  const code = w.weatherCode || w.weatherCodeFullDay || w.weatherCodeDay || null;
+
   errorEl.classList.add("hidden");
   weatherCard.classList.remove("hidden");
 
-  document.getElementById("cityName").textContent = localStorage.getItem("lastCity") || "Lokasi Anda";
-  document.getElementById("weatherDesc").textContent = `Kondisi: ${translateCondition(w.weatherCode)}`;
+  document.getElementById("cityName").textContent =
+    localStorage.getItem("lastCity") || "Lokasi Anda";
+
+  // ✅ Kondisi default kalau code nggak ada / belum dikenal
+  const conditionText = code ? translateCondition(code) : "Tidak diketahui";
+  document.getElementById("weatherDesc").textContent = `Kondisi: ${conditionText}`;
+
   document.getElementById("tempValue").textContent = `${Math.round(w.temperature)}°C`;
   document.getElementById("humidity").textContent = `Kelembapan ${w.humidity}%`;
   document.getElementById("wind").textContent = `Angin ${w.windSpeed} m/s`;
   document.getElementById("feels").textContent = `Terasa ${Math.round(w.temperatureApparent)}°C`;
 
-  document.getElementById("weatherIcon").src = getWeatherIcon(w.weatherCode);
+  // ✅ Pakai fallback ikon juga
+  document.getElementById("weatherIcon").src = getWeatherIcon(code);
 }
 
 function showError(msg) {
